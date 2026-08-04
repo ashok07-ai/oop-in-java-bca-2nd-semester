@@ -65,23 +65,23 @@ Java's official specification lists a set of **buzzwords** that describe its fea
 ### 2.2 Relationship Diagram
  
 ```
- ┌───────────────────────────────────────────────┐
- │                     JDK                       │
- │   (Java Development Kit)                      │
- │   - javac (compiler), javadoc, jar, debugger  │
- │  ┌───────────────────────────────────────────┐│
- │  │                  JRE                      ││
- │  │        (Java Runtime Environment)         ││
- │  │   - Class Libraries (java.lang, java.util)││
- │  │  ┌──────────────────────────────────────  ││
- │  │  │                 JVM                    ││ 
- │  │  │        (Java Virtual Machine)          ││ 
- │  │  │  - Class Loader                        ││ 
- │  │  │  - Bytecode Verifier                   ││ 
- │  │  │  - Execution Engine (Interpreter/JIT)  ││ 
- │  │  └─────────────────────────────────────── ┘│ 
- │  └───────────────────────────────────────────┘│
- └───────────────────────────────────────────────┘
+ ┌────────────────────────────────────────────────┐
+ │                     JDK                        │
+ │   (Java Development Kit)                       │
+ │   - javac (compiler), javadoc, jar, debugger   │
+ │  ┌───────────────────────────────────────────┐ │
+ │  │                  JRE                      │ │
+ │  │        (Java Runtime Environment)         │ │
+ │  │   - Class Libraries (java.lang, java.util)│ │
+ │  │  ┌──────────────────────────────────────  │ │
+ │  │  │                 JVM                    │ │ 
+ │  │  │        (Java Virtual Machine)          │ │ 
+ │  │  │  - Class Loader                        │ │ 
+ │  │  │  - Bytecode Verifier                   │ │ 
+ │  │  │  - Execution Engine (Interpreter/JIT)  │ │ 
+ │  │  └─────────────────────────────────────── ┘ │ 
+ │  └───────────────────────────────────────────┘ │
+ └────────────────────────────────────────────────┘
 ```
  
 ### 2.3 Java Program Execution Architecture (Compilation + Execution Flow) - JVM Architecure
@@ -117,16 +117,16 @@ PROCEDURAL PROGRAMMING                 OBJECT ORIENTED PROGRAMMING
 ─────────────────────────             ─────────────────────────────
         main()                                  Object 1
        /   |   \                              ┌───────────┐
-      /    |    \                             │ Data       │
- func1() func2() func3()                      │ Methods    │
+      /    |    \                             │ Data      │
+ func1() func2() func3()                      │ Methods   │
       \    |    /                             └───────────┘
        \   |   /                                    │
      Global Data (shared)                     interacts with
                                                       │
                                                Object 2
                                               ┌───────────┐
-                                              │ Data       │
-                                              │ Methods    │
+                                              │ Data      │
+                                              │ Methods   │
                                               └───────────┘
 ```
  
