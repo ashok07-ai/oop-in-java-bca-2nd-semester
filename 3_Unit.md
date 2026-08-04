@@ -458,7 +458,7 @@ public class VarargsDemo {
  
 ```java
 // File: Calculator.java
-package np.edu.tu.bca;   // must be the FIRST statement in the file
+package com.stack.bca;   // must be the FIRST statement in the file
  
 public class Calculator {
     public int add(int a, int b) {
@@ -469,7 +469,7 @@ public class Calculator {
  
 **Directory structure required:**
 ```
-np/edu/tu/bca/Calculator.java
+com/stack/bca/Calculator.java
 ```
  
 **Compiling:**
@@ -481,7 +481,7 @@ javac -d . Calculator.java
  
 ```java
 // File: TestCalculator.java
-import np.edu.tu.bca.Calculator;   // importing user-defined package
+import com.stack.Calculator;   // importing user-defined package
  
 public class TestCalculator {
     public static void main(String[] args) {
@@ -496,6 +496,6 @@ public class TestCalculator {
 | Type | Description | Example |
 |---|---|---|
 | **Built-in Package** | Provided by Java itself | `java.util`, `java.io`, `java.lang` |
-| **User-defined Package** | Created by the programmer | `np.edu.tu.bca` |
+| **User-defined Package** | Created by the programmer | `com.stack.example` |
  
 ---
