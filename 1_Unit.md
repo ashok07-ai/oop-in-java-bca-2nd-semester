@@ -22,9 +22,7 @@
 - It was originally designed for **programming consumer electronic devices** (set-top boxes, TVs) but later found its true use in **Internet programming**.
 - Java 1.0 was released publicly in **1995** by Sun Microsystems.
 - In **2010, Oracle Corporation** acquired Sun Microsystems and now owns and maintains Java.
-- Nepal's IT industry (banking software, e-governance systems like PAN registration, university ERP systems, mobile banking backends) widely uses Java (especially Java EE/Spring) because it is platform-independent, secure, and enterprise-ready — making this history relevant for BCA students who may work on such systems.
-**Timeline (simplified):**
- 
+- Nepal's IT industry (banking software, e-governance systems like PAN registration, university ERP systems, mobile banking backends) widely uses Java (especially Java EE/Spring) because it is platform-independent, secure, and enterprise-ready.
 ```
 1991 -> Project "Oak" started (James Gosling, Sun Microsystems)
 1995 -> Renamed to "Java", Java 1.0 released
@@ -52,7 +50,7 @@ Java's official specification lists a set of **buzzwords** that describe its fea
 | **Dynamic** | Java programs carry a lot of run-time information that can verify and resolve access to objects at run time. |
 | **Interpreted** | The JVM interprets bytecode instruction by instruction (along with JIT compilation for speed). |
 
-**Memory tip (acronym style used commonly in Nepali colleges):**
+**Memory tip (acronym style used commonly):**
 > **"SOPS RAP HDM"** — Simple, Object-Oriented, Platform Independent, Secure, Robust, Architecture Neutral, Portable, High Performance, Distributed, Multithreaded, Dynamic *(you can rearrange to form your own mnemonic for exams)*
  
 ---
@@ -68,25 +66,25 @@ Java's official specification lists a set of **buzzwords** that describe its fea
  
 ```
  ┌───────────────────────────────────────────────┐
- │                     JDK                        │
- │   (Java Development Kit)                       │
- │   - javac (compiler), javadoc, jar, debugger    │
- │  ┌───────────────────────────────────────────┐ │
- │  │                  JRE                       │ │
- │  │        (Java Runtime Environment)          │ │
- │  │   - Class Libraries (java.lang, java.util) │ │
- │  │  ┌───────────────────────────────────────┐  │ │
- │  │  │                 JVM                   │  │ │
- │  │  │        (Java Virtual Machine)         │  │ │
- │  │  │  - Class Loader                       │  │ │
- │  │  │  - Bytecode Verifier                  │  │ │
- │  │  │  - Execution Engine (Interpreter/JIT) │  │ │
- │  │  └───────────────────────────────────────┘  │ │
- │  └───────────────────────────────────────────┘ │
+ │                     JDK                       │
+ │   (Java Development Kit)                      │
+ │   - javac (compiler), javadoc, jar, debugger  │
+ │  ┌───────────────────────────────────────────┐│
+ │  │                  JRE                      ││
+ │  │        (Java Runtime Environment)         ││
+ │  │   - Class Libraries (java.lang, java.util)││
+ │  │  ┌──────────────────────────────────────  ││
+ │  │  │                 JVM                    ││ 
+ │  │  │        (Java Virtual Machine)          ││ 
+ │  │  │  - Class Loader                        ││ 
+ │  │  │  - Bytecode Verifier                   ││ 
+ │  │  │  - Execution Engine (Interpreter/JIT)  ││ 
+ │  │  └─────────────────────────────────────── ┘│ 
+ │  └───────────────────────────────────────────┘│
  └───────────────────────────────────────────────┘
 ```
  
-### 2.3 Java Program Execution Architecture (Compilation + Execution Flow)
+### 2.3 Java Program Execution Architecture (Compilation + Execution Flow) - JVM Architecure
  
 ![Architecture of JVM](./images/architecture_of_jvm.png)
 
@@ -174,7 +172,7 @@ public class Main {
  
 | Code | Explanation |
 |---|---|
-| `public class HelloNepal` | Declares a public class named `HelloNepal`. The file name **must match** the public class name exactly (`HelloNepal.java`). |
+| `public class Main` | Declares a public class named `Main`. The file name **must match** the public class name exactly (`Main.java`). |
 | `public static void main(String[] args)` | The **main method** — entry point of every Java application. JVM starts execution from here. |
 | `public` | Access modifier — accessible from anywhere |
 | `static` | Means the method belongs to the class, not an instance; JVM can call it without creating an object |
@@ -254,16 +252,16 @@ java Main
                                           Output printed on console
 ```
  
-### 5.3 Common Compilation Notes
+<!-- ### 5.3 Common Compilation Notes
  
 - `javac` is the **compiler** (part of JDK) — converts `.java` → `.class`.
 - `java` is the **launcher** that starts the JVM and runs the bytecode.
 - If the class is inside a **package**, e.g., `package np.edu.bca;`, then:
-  - Compile: `javac -d . HelloNepal.java`
-  - Run: `java np.edu.bca.HelloNepal`
+  - Compile: `javac -d . Main.java`
+  - Run: `java np.edu.bca.Main` -->
 ### 5.4 Using an IDE (common in Nepal's colleges/labs)
  
-Most colleges (e.g., using **Eclipse**, **NetBeans**, **IntelliJ IDEA**, or **VS Code with Java Extension Pack**) allow students to simply click **Run**, which internally performs the same `javac` + `java` steps.
+Using **Eclipse**, **NetBeans**, **IntelliJ IDEA**, or **VS Code with Java Extension Pack** allow students to simply click **Run**, which internally performs the same `javac` + `java` steps.
  
 ---
  
@@ -292,15 +290,15 @@ public class CommandLineDemo {
  
 ```bash
 javac CommandLineDemo.java
-java CommandLineDemo Kathmandu Pokhara Biratnagar
+java CommandLineDemo Bsc.CSIT BCA BIT
 ```
  
 **Output:**
 ```
 Total arguments passed: 3
-Argument 0: Kathmandu
-Argument 1: Pokhara
-Argument 2: Biratnagar
+Argument 0: Bsc.CSIT
+Argument 1: BCA
+Argument 2: BIT
 ```
  
 ### 6.4 Example: Adding Two Numbers via Command Line
@@ -356,7 +354,7 @@ Sum = 40
 | `nextBoolean()` | Reads a boolean value (true/false) |
 | `hasNext()` | Checks whether more input is available |
  
-### 7.4 Example Program (Nepal Context: Grocery / Kirana Store Bill)
+### 7.4 Example Program (Grocery Store Bill)
  
 ```java
 import java.util.Scanner;
@@ -385,7 +383,7 @@ public class KiranaBill {
 }
 ```
  
-**Sample Run:**
+**Output:**
 ```
 Enter customer name: Ramesh Thapa
 Enter quantity of rice (kg): 5
@@ -525,8 +523,8 @@ This compiles and runs without any error message, but the **output is logically 
  
 ```
           ┌───────────────┐
-          │   try block     │
-          │ (risky code)    │
+          │   try block   │
+          │ (risky code)  │
           └───────┬───────┘
                   │
         Exception occurs? 
@@ -534,15 +532,15 @@ This compiles and runs without any error message, but the **output is logically 
           Yes           No
            │            │
    ┌───────▼──────┐     │
-   │  catch block  │     │
-   │ (handle error)│     │
+   │  catch block  │    │
+   │ (handle error)│    │
    └───────┬──────┘     │
            │            │
            └─────┬──────┘
                  ▼
          ┌───────────────┐
-         │ finally block  │
-         │ (always runs)  │
+         │ finally block │
+         │ (always runs) │
          └───────────────┘
 ```
  
