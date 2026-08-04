@@ -259,7 +259,7 @@ java Main
 - If the class is inside a **package**, e.g., `package np.edu.bca;`, then:
   - Compile: `javac -d . Main.java`
   - Run: `java np.edu.bca.Main` -->
-### 5.4 Using an IDE (common in Nepal's colleges/labs)
+### 5.4 Using an IDE
  
 Using **Eclipse**, **NetBeans**, **IntelliJ IDEA**, or **VS Code with Java Extension Pack** allow students to simply click **Run**, which internally performs the same `javac` + `java` steps.
  
