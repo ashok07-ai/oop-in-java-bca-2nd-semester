@@ -309,5 +309,162 @@ public class FinalDemo {
 ```
 
 ---
+## 4.7 Abstract Class and Methods
+ 
+**Definition:** An **abstract class** is a class declared using the `abstract` keyword that **cannot be instantiated** (no objects can be created directly). It may contain both abstract methods (no body) and concrete methods (with body). An **abstract method** has only a declaration, no implementation, and must be implemented by the first concrete subclass.
+ 
+### Example (Loan Types)
+ 
+```java
+abstract class Loan {
+    String borrower;
+ 
+    abstract double calculateInterest(double principal);  // abstract method - no body
+ 
+    void showBorrower() {                                  // concrete method
+        System.out.println("Borrower: " + borrower);
+    }
+}
+ 
+class HomeLoan extends Loan {
+    @Override
+    double calculateInterest(double principal) {
+        return principal * 0.09;   // 9% interest
+    }
+}
+ 
+class EducationLoan extends Loan {
+    @Override
+    double calculateInterest(double principal) {
+        return principal * 0.07;   // 7% interest
+    }
+}
+ 
+public class AbstractDemo {
+    public static void main(String[] args) {
+        Loan loan1 = new HomeLoan();
+        loan1.borrower = "Alpha alpha";
+        System.out.println(loan1.calculateInterest(500000));
+ 
+        Loan loan2 = new EducationLoan();
+        loan2.borrower = "Beta beta";
+        System.out.println(loan2.calculateInterest(300000));
+ 
+        // Loan l = new Loan();   // ERROR - cannot instantiate abstract class
+    }
+}
+```
+ 
+### Rules
+- If a class has at least one abstract method, the class **must** be declared abstract.
+- An abstract class **can have constructors**, fields, and normal methods too.
+- A subclass must override **all** abstract methods, or itself be declared abstract.
+---
+ 
+## 4.8 Access Control (Private, Protected, Default and Public)
+ 
+**Definition:** Access modifiers control the **visibility/scope** of classes, methods, and variables.
+ 
+### Access Modifier Table
+ 
+| Modifier | Same Class | Same Package | Subclass (different package) | Different Package (non-subclass) |
+|---|:---:|:---:|:---:|:---:|
+| `private` | ✅ | ❌ | ❌ | ❌ |
+| *default* (no modifier) | ✅ | ✅ | ❌ | ❌ |
+| `protected` | ✅ | ✅ | ✅ | ❌ |
+| `public` | ✅ | ✅ | ✅ | ✅ |
+ 
+### Diagram
+ 
+```
+public      : accessible EVERYWHERE
+   │
+protected   : accessible within package + subclasses (even in other packages)
+   │
+default     : accessible only within the SAME package
+   │
+private     : accessible only within the SAME class
+```
+ 
+### Example
+ 
+```java
+public class Employee {
+    private double salary;       // accessible only within this class
+    protected String department; // accessible within package + subclasses
+    String empId;                // default - accessible within same package
+    public String name;          // accessible from anywhere
+ 
+    private void showSalary() {
+        System.out.println("Salary: " + salary);
+    }
+}
+```
+ 
+---
+ 
+## 4.9 Interface: Defining, Implementing and Applying Interface
+ 
+**Definition:** An interface is a **blueprint of a class** that contains only **abstract methods** (prior to Java 8), **static/default methods** (Java 8+), and **constants** (implicitly `public static final`). A class **implements** an interface using the `implements` keyword, providing bodies for all its abstract methods. Interfaces enable **full abstraction** and support **multiple inheritance** in Java.
+ 
+### 4.9.1 Defining an Interface
+ 
+```java
+interface Payable {
+    double TAX_RATE = 0.13;             // implicitly public static final (13% VAT - Nepal context)
+    double calculateSalary();           // implicitly public abstract
+}
+```
+ 
+### 4.9.2 Implementing an Interface
+ 
+```java
+class Employee implements Payable {
+    double basicSalary;
+    Employee(double basicSalary) { this.basicSalary = basicSalary; }
+ 
+    @Override
+    public double calculateSalary() {
+        return basicSalary + (basicSalary * TAX_RATE);
+    }
+}
+ 
+public class InterfaceDemo {
+    public static void main(String[] args) {
+        Employee e = new Employee(50000);
+        System.out.println("Total Salary with tax: " + e.calculateSalary());
+    }
+}
+```
+ 
+### 4.9.3 Multiple Inheritance using Interface
+ 
+```java
+interface Printable {
+    void print();
+}
+interface Showable {
+    void show();
+}
+ 
+class Report implements Printable, Showable {   // implementing multiple interfaces
+    public void print() { System.out.println("Printing report..."); }
+    public void show() { System.out.println("Showing report..."); }
+}
+```
+ 
+### Difference: Abstract Class vs Interface
+ 
+| Basis | Abstract Class | Interface |
+|---|---|---|
+| Keyword | `abstract class` | `interface` |
+| Methods | Can have abstract + concrete methods | Traditionally only abstract; Java 8+ allows `default`/`static` methods |
+| Variables | Can have any type of variables | Only `public static final` (constants) |
+| Inheritance | A class can extend only **one** abstract class | A class can implement **multiple** interfaces |
+| Constructor | Can have constructors | Cannot have constructors |
+| Access modifiers | Methods can be private/protected/public | Methods are implicitly public |
+| Use case | When classes share a common base with some shared code | When unrelated classes need to guarantee certain behavior |
+ 
+---
 
 
