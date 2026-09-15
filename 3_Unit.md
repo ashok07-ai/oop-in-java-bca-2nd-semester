@@ -1,6 +1,6 @@
 # Unit 3: Class and Objects in Java
  
-## Table of Contents (Unit 3)
+## Table of Contents
 1. [Defining Class, Adding Methods, Creating Objects, Calling Methods](#31-defining-class-adding-method-to-class-creating-object-and-calling-functionmethod)
 2. [Abstraction and Encapsulation](#32-abstraction-and-encapsulation)
 3. [Constructors and its Types](#33-constructors-and-its-type)

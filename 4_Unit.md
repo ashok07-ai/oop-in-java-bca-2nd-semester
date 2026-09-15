@@ -1,6 +1,6 @@
 Unit 4: Inheritance and Polymorphism
 
-## Table of Contents (Unit 4)
+## Table of Contents
 
 1. [Inheritance Basics](#41-inheritance-basics)
 2. [Types of Inheritance](#42-inheritance-type-single-level-multi-level-multiple-and-hierarchical)

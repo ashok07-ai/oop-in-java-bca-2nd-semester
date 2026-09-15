@@ -1,6 +1,6 @@
 # Unit 2: Basics of Java Programming
  
-## Table of Contents (Unit 2)
+## Table of Contents
 1. [Writing Comments and its Types](#21-writing-comments-and-its-types)
 2. [Java Tokens: Keywords, Identifiers, Literals, Operators, Separators](#22-java-tokens-keywords-identifiers-literals-operators-separators)
 3. [Data Types: Primitive and User-Defined](#23-data-types-primitive-and-user-defined)
