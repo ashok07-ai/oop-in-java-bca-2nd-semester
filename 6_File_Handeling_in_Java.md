@@ -58,23 +58,22 @@ public class ConsoleIODemo {
 `File` represents a file or directory pathname; it does not itself read/write file content but is used to create, delete, or query file/directory properties.
  
 ```java
-import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
- 
-public class FileClassDemo {
+
+public class FileOutputStreamExample {
+
     public static void main(String[] args) throws IOException {
-        File file = new File("student.txt");
- 
-        if (!file.exists()) {
-            file.createNewFile();               // creates a new empty file
-            System.out.println("File created: " + file.getName());
-        }
- 
-        System.out.println("Absolute Path: " + file.getAbsolutePath());
-        System.out.println("Is Directory? " + file.isDirectory());
-        System.out.println("File Size (bytes): " + file.length());
-        System.out.println("Can Read? " + file.canRead());
-        System.out.println("Can Write? " + file.canWrite());
+
+        FileOutputStream fos = new FileOutputStream("nepathya.txt");
+
+        String text = "Nepathya is affiliated to Tribhuvan University \n We have two faculties BCA and BSc.CSIT";
+
+        fos.write(text.getBytes()); // "hello java" -> getBytes() -> byte array
+
+        fos.close();
+
+        System.out.println("file created and data added successfully");
     }
 }
 ```
@@ -117,33 +116,48 @@ public class ByteWriteDemo {
 ```java
 import java.io.FileInputStream;
 import java.io.IOException;
- 
-public class ByteReadDemo {
-    public static void main(String[] args) {
-        try (FileInputStream fis = new FileInputStream("bytefile.txt")) {
-            int byteData;
-            while ((byteData = fis.read()) != -1) {    // read() returns -1 at end of file
-                System.out.print((char) byteData);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
+
+public class FileInputStreamExample {
+
+    public static void main(String[] args) throws IOException {
+
+        FileInputStream fis = new FileInputStream("nepathya.txt");
+
+        int data;
+
+        while ((data = fis.read()) != -1) {
+            System.out.print((char) data);
         }
+
+        fis.close();
     }
 }
 ```
  
-### Reading in Chunks (using a buffer array)
+### Program for Downloading image using Byte Stream class
  
 ```java
-try (FileInputStream fis = new FileInputStream("bytefile.txt")) {
-    byte[] buffer = new byte[1024];
-    int bytesRead;
-    while ((bytesRead = fis.read(buffer)) != -1) {
-        System.out.println(new String(buffer, 0, bytesRead));
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class DownloadImageExample {
+  public static void main(String[] args) throws IOException {
+    FileInputStream fis = new FileInputStream("thor.jpeg");
+    FileOutputStream fos = new FileOutputStream("thor_backup.jpeg");
+
+    int data;
+
+    while((data = fis.read()) != -1){
+      fos.write(data);
     }
-} catch (IOException e) {
-    System.out.println("Error: " + e.getMessage());
+
+    fis.close();
+    fos.close();
+    System.out.println("Photo copied successfully...");
+  }
 }
+
 ```
  
 ---
@@ -165,42 +179,46 @@ try (FileInputStream fis = new FileInputStream("bytefile.txt")) {
  
 ```java
 import java.io.FileWriter;
-import java.io.BufferedWriter;
 import java.io.IOException;
- 
-public class CharWriteDemo {
-    public static void main(String[] args) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("notes.txt"))) {
-            bw.write("Unit 6: File Handling in Java");
-            bw.newLine();                     // writes a line separator
-            bw.write("Character streams handle text efficiently.");
-            System.out.println("File written successfully using FileWriter");
-        } catch (IOException e) {
-            System.out.println("Error writing file: " + e.getMessage());
-        }
-    }
+
+public class FileWriterExample {
+  public static void main(String[] args) throws IOException{
+    FileWriter writer = new FileWriter("abc.txt"); 
+
+    writer.write("Java is a programming language\nLatest version of java is 26.0");
+    writer.write("\n");
+    writer.write("C is a programming language");
+    writer.write("\n");
+    writer.write("BCA, Bsc.CSIT");
+
+    writer.close();
+    System.out.println("File created successfully!!");
+  }
 }
+
 ```
  
 ### Example: Reading Characters from a File (line by line)
  
 ```java
 import java.io.FileReader;
-import java.io.BufferedReader;
 import java.io.IOException;
- 
-public class CharReadDemo {
-    public static void main(String[] args) {
-        try (BufferedReader br = new BufferedReader(new FileReader("notes.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {   // readLine() returns null at end of file
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
+
+public class FileReaderExample {
+  public static void main(String[] args) throws IOException {
+    FileReader fileReader = new FileReader("abc.txt");
+
+    int data;
+
+    while((data = fileReader.read()) != -1){
+      System.out.print((char) data);
     }
+
+    fileReader.close();
+    System.out.println("File read successfully....");
+  }
 }
+
 ```
  
 ### Byte Stream vs Character Stream — Summary
@@ -231,15 +249,12 @@ public class CharReadDemo {
 import java.io.Serializable;
  
 class Student implements Serializable {
-    private static final long serialVersionUID = 1L;   // version control for serialized class
     String name;
     int rollNo;
-    transient String password;   // 'transient' fields are NOT serialized
  
-    Student(String name, int rollNo, String password) {
+    Student(String name, int rollNo) {
         this.name = name;
         this.rollNo = rollNo;
-        this.password = password;
     }
 }
 ```
@@ -247,20 +262,29 @@ class Student implements Serializable {
 ### Serializing (Writing) an Object
  
 ```java
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.IOException;
- 
-public class SerializeDemo {
-    public static void main(String[] args) {
-        Student s1 = new Student("Manisha KC", 21, "secret123");
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student.ser"))) {
-            oos.writeObject(s1);            // serializes the object to student.ser
-            System.out.println("Object serialized successfully");
-        } catch (IOException e) {
-            System.out.println("Serialization error: " + e.getMessage());
-        }
-    }
+import java.io.ObjectOutputStream;
+
+public class ObjectOutputStreamExample{
+  public static void main(String[] args) throws FileNotFoundException, IOException {
+    // Create student object
+    Student std = new Student("Alpha", 20);
+
+    // Create a binary file that stores the data of an object
+    FileOutputStream fos = new FileOutputStream("student.dat");
+
+    // Store the object in the created file -> student.dat
+    ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+    oos.writeObject(std);
+
+    oos.close();
+    fos.close();
+
+    System.out.println("Object saved successfully!!");
+  }
 }
 ```
  
@@ -269,27 +293,30 @@ public class SerializeDemo {
 ```java
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.io.IOException;
- 
-public class DeserializeDemo {
-    public static void main(String[] args) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student.ser"))) {
-            Student s1 = (Student) ois.readObject();     // deserializes the object
-            System.out.println("Name: " + s1.name);
-            System.out.println("Roll No: " + s1.rollNo);
-            System.out.println("Password: " + s1.password);   // will print 'null' - was transient
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Deserialization error: " + e.getMessage());
-        }
-    }
+
+public class ObjectInputStreamClassExample {
+  public static void main(String[] args) throws Exception {
+
+    FileInputStream fis = new FileInputStream("student.dat");
+
+    ObjectInputStream ois = new ObjectInputStream(fis);
+
+    Student std = (Student) ois.readObject();
+
+    // display the details
+    System.out.println("Name: " + std.name);
+    System.out.println("Age" + std.age);
+
+    // close refrences
+    ois.close();
+    fis.close();
+
+    System.out.println("File reterived successfully");
+
+  }
 }
 ```
  
-### Important Notes
- 
-- The `transient` keyword excludes a field from being serialized (useful for sensitive data like passwords, or non-serializable fields).
-- `serialVersionUID` is used to verify that the sender and receiver of a serialized object have loaded compatible classes; mismatches throw `InvalidClassException`.
-- If a class contains a reference to another object, that referenced class must also implement `Serializable`, or the field must be marked `transient`.
 ---
  
 ## 6.5 RandomAccessFile Class
@@ -316,37 +343,24 @@ public class DeserializeDemo {
 ### Example: Writing and Randomly Accessing Data
  
 ```java
-import java.io.RandomAccessFile;
 import java.io.IOException;
- 
-public class RandomAccessFileDemo {
-    public static void main(String[] args) {
-        try (RandomAccessFile raf = new RandomAccessFile("records.dat", "rw")) {
-            // Writing records - each record has fixed size: int (4 bytes) + UTF name
-            raf.writeInt(101);
-            raf.writeUTF("Alpha alpha");
- 
-            raf.writeInt(102);
-            raf.writeUTF("Beta beta");
- 
-            // Move the file pointer back to the beginning to read the first record
-            raf.seek(0);
-            int id1 = raf.readInt();
-            String name1 = raf.readUTF();
-            System.out.println("Record 1 -> ID: " + id1 + ", Name: " + name1);
- 
-            // Jump directly to the second record without reading sequentially
-            long secondRecordPosition = 4 + (2 + name1.length()); // int size + UTF length
-            raf.seek(secondRecordPosition);
-            int id2 = raf.readInt();
-            String name2 = raf.readUTF();
-            System.out.println("Record 2 -> ID: " + id2 + ", Name: " + name2);
- 
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+import java.io.RandomAccessFile;
+
+public class RandomAccessFileExample {
+  public static void main(String[] args) throws IOException {
+    RandomAccessFile file = new RandomAccessFile("xyz.txt", "rw");
+
+    file.writeUTF("Hello.java");
+
+    // Move to the beginning
+    file.seek(0);
+
+    System.out.println(file.readUTF());
+
+    file.close();
+  }
 }
+
 ```
  
 ### RandomAccessFile vs Sequential Streams
