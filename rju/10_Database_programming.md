@@ -64,7 +64,8 @@ public class DBConnectionDemo {
         String username = "root";
         String password = "yourpassword";
 
-        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password)
             System.out.println("Database connected successfully!");
             System.out.println("Connection info: " + connection.getMetaData().getDatabaseProductName());
         } catch (SQLException e) {
@@ -110,9 +111,9 @@ public class StatementDemo {
     public static void main(String[] args) {
         String url = "jdbc:mysql://localhost:3306/college_db";
 
-        try (Connection con = DriverManager.getConnection(url, "root", "yourpassword");
-             Statement stmt = con.createStatement()) {
-
+        try {
+            Connection con = DriverManager.getConnection(url, "root", "yourpassword"
+            Statement stmt = con.createStatement())
             // INSERT using executeUpdate()
             String insertSQL = "INSERT INTO students (id, name, marks) VALUES (1, 'Manisha KC', 85)";
             int rowsInserted = stmt.executeUpdate(insertSQL);
@@ -149,9 +150,9 @@ public class PreparedStatementDemo {
         String url = "jdbc:mysql://localhost:3306/college_db";
         String insertSQL = "INSERT INTO students (id, name, marks) VALUES (?, ?, ?)";
 
-        try (Connection con = DriverManager.getConnection(url, "root", "yourpassword");
-             PreparedStatement pstmt = con.prepareStatement(insertSQL)) {
-
+        try{
+            Connection con = DriverManager.getConnection(url, "root", "yourpassword"
+            PreparedStatement pstmt = con.prepareStatement(insertSQL));
             pstmt.setInt(1, 2);                  // sets value for first '?'
             pstmt.setString(2, "Bishal Thapa");  // sets value for second '?'
             pstmt.setDouble(3, 91.5);            // sets value for third '?'
@@ -165,66 +166,6 @@ public class PreparedStatementDemo {
     }
 }
 ```
-
-### 10.2.3 `CallableStatement` Interface
-
-Used to execute **stored procedures** (precompiled SQL routines) residing in the database.
-
-```java
-import java.sql.*;
-
-public class CallableStatementDemo {
-    public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/college_db";
-        // Assumes a stored procedure: getStudentById(IN studentId INT)
-        String call = "{call getStudentById(?)}";
-
-        try (Connection con = DriverManager.getConnection(url, "root", "yourpassword");
-             CallableStatement cstmt = con.prepareCall(call)) {
-
-            cstmt.setInt(1, 1);
-            ResultSet rs = cstmt.executeQuery();
-            while (rs.next()) {
-                System.out.println("Name: " + rs.getString("name"));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-        }
-    }
-}
-```
-
-### Comparison: Statement vs PreparedStatement vs CallableStatement
-
-| Basis | `Statement` | `PreparedStatement` | `CallableStatement` |
-| ----- | ----------- | --------------------- | ---------------------- |
-| SQL type | Static (no parameters) | Parameterized (precompiled) | Calls stored procedures |
-| Performance | Slower for repeated execution | Faster (compiled once, reused) | Depends on the procedure |
-| SQL injection risk | High | Low (parameters are escaped safely) | Low |
-| Typical use | One-off simple queries | Repeated queries with dynamic values | Executing pre-defined DB procedures |
-
-### Example: UPDATE and DELETE
-
-```java
-// UPDATE example
-String updateSQL = "UPDATE students SET marks = ? WHERE id = ?";
-try (PreparedStatement pstmt = con.prepareStatement(updateSQL)) {
-    pstmt.setDouble(1, 95.0);
-    pstmt.setInt(2, 1);
-    int updatedRows = pstmt.executeUpdate();
-    System.out.println(updatedRows + " row(s) updated");
-}
-
-// DELETE example
-String deleteSQL = "DELETE FROM students WHERE id = ?";
-try (PreparedStatement pstmt = con.prepareStatement(deleteSQL)) {
-    pstmt.setInt(1, 2);
-    int deletedRows = pstmt.executeUpdate();
-    System.out.println(deletedRows + " row(s) deleted");
-}
-```
-
 ---
 
 ## 10.3 ResultSet Interface
@@ -261,9 +202,10 @@ public class ResultSetDemo {
         String url = "jdbc:mysql://localhost:3306/college_db";
         String query = "SELECT id, name, marks FROM students";
 
-        try (Connection con = DriverManager.getConnection(url, "root", "yourpassword");
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+        try{
+            Connection con = DriverManager.getConnection(url, "root", "yourpassword"
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query));
 
             System.out.println("ID\tName\t\tMarks");
             while (rs.next()) {                 // cursor moves to next row each iteration
