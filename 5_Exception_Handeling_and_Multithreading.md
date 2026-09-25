@@ -156,7 +156,7 @@ public class AgeValidator {
 }
 ```
  
-### Order of Execution Notes
+### Order of Execution
  
 - `catch` blocks must be ordered from **most specific to most general** (a subclass exception before its superclass), otherwise a compile error occurs.
 - `finally` executes even if a `return` statement is present in the `try` or `catch` block (unless `System.exit()` is called).
@@ -279,6 +279,8 @@ public class UserDefinedExceptionDemo {
 | Creation overhead | High | Low |
  
 ### Life Cycle of a Thread
+![Lifecycle of Thread](./images/lifecycle_of_thread.png)
+
  
 ```
    New → Runnable → Running → Blocked/Waiting → Terminated

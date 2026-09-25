@@ -568,6 +568,8 @@ public class RegistrationForm extends JFrame {
 
 ### 4.4.2 Applet Life Cycle
 
+![Lifecycle of Applet](../images/lifecycle-of-applet.png)
+
 ```
    init() → start() → paint() → [stop() → start() → paint() ...] → stop() → destroy()
       │         │         │                                            │        │
