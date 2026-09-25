@@ -310,24 +310,36 @@ public class ComparatorDemo {
 ### Generic Class
  
 ```java
-class Box<T> {                       // T is a type parameter
-    private T item;
- 
-    void setItem(T item) { this.item = item; }
-    T getItem() { return item; }
+
+class Box<T>{
+  T value;
+
+  // Setter method
+  void setValue(T value){
+    this.value = value;
+  }
+
+  // Getter method
+  T getValue(){
+    return value;
+  }
 }
- 
-public class GenericClassDemo {
-    public static void main(String[] args) {
-        Box<String> stringBox = new Box<>();
-        stringBox.setItem("Hello Generics");
-        System.out.println(stringBox.getItem());
- 
-        Box<Integer> intBox = new Box<>();
-        intBox.setItem(100);
-        System.out.println(intBox.getItem());
-        // no casting needed, and compiler prevents type mismatch at compile time
-    }
+
+public class GenericClassExample{
+  public static void main(String[] args) {
+    Box<Integer> box = new Box<>();
+    box.setValue(100);
+
+    Box<String> nameValue = new Box<>();
+    nameValue.setValue("Alpha");
+
+    Box<Boolean> booleanValue = new Box<>();
+    booleanValue.setValue(true);
+
+    System.out.println(box.getValue());
+    System.out.println(nameValue.getValue());
+    System.out.println(booleanValue.getValue());
+  }
 }
 ```
  
@@ -336,21 +348,19 @@ public class GenericClassDemo {
 A method can declare its own type parameter, independent of whether its class is generic.
  
 ```java
-public class GenericMethodDemo {
-    // generic method - <T> declared before the return type
-    static <T> void printArray(T[] array) {
-        for (T element : array) {
-            System.out.print(element + " ");
-        }
-        System.out.println();
+public class GenericMethodExample {
+
+    // Generic method
+    public static <T> void display(T value) {
+        System.out.println(value);
     }
- 
+
     public static void main(String[] args) {
-        Integer[] intArray = {1, 2, 3, 4};
-        String[] strArray = {"A", "B", "C"};
- 
-        printArray(intArray);
-        printArray(strArray);
+
+        display(100);        // Integer
+        display("Alpha");   // String
+        display(true);      // Boolean
+        display(25.5);      // Double
     }
 }
 ```
@@ -382,22 +392,45 @@ public class MultiTypeParamDemo {
 An interface can also declare type parameters, which must be provided (or further parameterized) by implementing classes.
  
 ```java
-interface Container<T> {
-    void add(T item);
-    T get();
+interface Box<T> {
+
+    void setValue(T value);
+
+    T getValue();
 }
- 
-class SimpleContainer<T> implements Container<T> {
-    private T item;
-    public void add(T item) { this.item = item; }
-    public T get() { return item; }
+
+class MyBox<T> implements Box<T> {
+
+    private T value;
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
 }
- 
-public class GenericInterfaceDemo {
+
+public class GenericInterfaceExample {
+
     public static void main(String[] args) {
-        Container<String> container = new SimpleContainer<>();
-        container.add("Generic Interface Example");
-        System.out.println(container.get());
+
+        // Integer type
+        MyBox<Integer> numberBox = new MyBox<>();
+        numberBox.setValue(100);
+
+        // String type
+        MyBox<String> nameBox = new MyBox<>();
+        nameBox.setValue("Alpha");
+
+        // Boolean type
+        MyBox<Boolean> booleanBox = new MyBox<>();
+        booleanBox.setValue(true);
+
+        System.out.println(numberBox.getValue());
+        System.out.println(nameBox.getValue());
+        System.out.println(booleanBox.getValue());
     }
 }
 ```
@@ -450,11 +483,27 @@ public class GenericHierarchyDemo {
 | `<? super T>` | Lower bounded - accepts `T` or any superclass of `T` |
  
 ```java
-static void printList(List<?> list) {     // accepts a List of any type
-    for (Object o : list) {
-        System.out.println(o);
+public class WildCardArgumentExmaple {
+  static void display(ArrayList<?> list){
+    for(int i = 0; i < list.size(); i++){
+      System.out.println("Names: " + list.get(i));
     }
+  }
+  public static void main(String[] args) {
+    ArrayList<String> names = new ArrayList<>();
+    names.add("alpha");
+    names.add("beta");
+    names.add("delta");
+    display(names);
+
+    ArrayList<Integer> numbers = new ArrayList<>();
+    numbers.add(100);
+    numbers.add(200);
+    numbers.add(300);
+    display(numbers);
+  }
 }
+
 ```
  
 ---
