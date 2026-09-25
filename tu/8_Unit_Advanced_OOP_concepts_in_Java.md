@@ -18,33 +18,42 @@
 **Definition:** Ensures a class has **only one instance** throughout the application and provides a single **global point of access** to it. Commonly used for logging, configuration managers, database connections, etc.
  
 ```java
-class DatabaseConnection {
-    // single static instance, created only once
-    private static DatabaseConnection instance;
- 
-    private DatabaseConnection() {       // private constructor prevents outside instantiation
-        System.out.println("Database connection created");
+class Singleton {
+
+    // 1. Create a private static object
+    private static Singleton instance;
+
+    // 2. Make constructor private
+    private Singleton() {
+        System.out.println("Singleton object created");
     }
- 
-    public static DatabaseConnection getInstance() {
-        if (instance == null) {                     // lazy initialization
-            instance = new DatabaseConnection();
+
+    // 3. Provide a public method to get the object
+    public static Singleton getInstance() {
+
+        if (instance == null) {
+            instance = new Singleton();
         }
+
         return instance;
     }
- 
-    void query(String sql) {
-        System.out.println("Executing: " + sql);
+
+    public void showMessage() {
+        System.out.println("Hello from Singleton!");
     }
 }
- 
-public class SingletonDemo {
+
+public class SingleTonPatternExapmle {
+
     public static void main(String[] args) {
-        DatabaseConnection db1 = DatabaseConnection.getInstance();
-        DatabaseConnection db2 = DatabaseConnection.getInstance();
- 
-        db1.query("SELECT * FROM students");
-        System.out.println("Same instance? " + (db1 == db2));   // true
+
+        Singleton obj1 = Singleton.getInstance();
+        Singleton obj2 = Singleton.getInstance();
+
+        obj1.showMessage();
+
+        // Check whether both objects are the same
+        System.out.println(obj1 == obj2);
     }
 }
 ```
@@ -54,84 +63,119 @@ public class SingletonDemo {
 **Definition:** Defines a separate method/class for **creating objects**, letting subclasses (or a factory method) decide which concrete class to instantiate — hiding object-creation logic from the client code.
  
 ```java
-interface Shape {
-    void draw();
+// Product interface
+interface Vehicle {
+    void drive();
 }
- 
-class Circle implements Shape {
-    public void draw() { System.out.println("Drawing a Circle"); }
-}
- 
-class Square implements Shape {
-    public void draw() { System.out.println("Drawing a Square"); }
-}
- 
-// Factory class - decides which object to create
-class ShapeFactory {
-    static Shape getShape(String type) {
-        switch (type.toLowerCase()) {
-            case "circle": return new Circle();
-            case "square": return new Square();
-            default: throw new IllegalArgumentException("Unknown shape: " + type);
-        }
+
+// Concrete Product 1
+class Car implements Vehicle {
+    public void drive() {
+        System.out.println("Driving a car");
     }
 }
- 
-public class FactoryDemo {
+
+// Concrete Product 2
+class Bike implements Vehicle {
+    public void drive() {
+        System.out.println("Riding a bike");
+    }
+}
+
+// Factory
+class VehicleFactory {
+
+    public Vehicle getVehicle(String type) {
+
+        if (type.equalsIgnoreCase("car")) {
+            return new Car();
+        }
+        else if (type.equalsIgnoreCase("bike")) {
+            return new Bike();
+        }
+
+        return null;
+    }
+}
+
+// Main class
+public class FactoryPatternExample {
+
     public static void main(String[] args) {
-        Shape s1 = ShapeFactory.getShape("circle");
-        s1.draw();
- 
-        Shape s2 = ShapeFactory.getShape("square");
-        s2.draw();
-        // Client code does not need to know Circle/Square class details
+
+        VehicleFactory factory = new VehicleFactory();
+
+        Vehicle v1 = factory.getVehicle("car");
+        v1.drive();
+
+        Vehicle v2 = factory.getVehicle("bike");
+        v2.drive();
     }
 }
 ```
  
 ### 8.1.3 Observer Pattern
  
-**Definition:** Defines a **one-to-many dependency** between objects so that when one object (the **subject**) changes state, all its dependents (**observers**) are automatically notified and updated. Commonly used in event-handling systems, GUIs, and notification services.
+**Definition:** Defines a **one-to-many dependency** between objects so that when one object (the **subject**) changes state, all its dependents (**observers**) are automatically notified and updated. Commonly used in event-handling systems, GUIs, and notification services in youtube or group chats.
  
 ```java
 import java.util.ArrayList;
 import java.util.List;
- 
-// Observer interface
+
+// Observer
 interface Subscriber {
-    void update(String news);
+    void update(String video);
 }
- 
-// Subject - maintains a list of observers
-class NewsChannel {
+
+// Concrete Observer
+class User implements Subscriber {
+
+    private String name;
+
+    User(String name) {
+        this.name = name;
+    }
+
+    public void update(String video) {
+        System.out.println(name + " received notification: " + video);
+    }
+}
+
+// Subject
+class YouTubeChannel {
+
     private List<Subscriber> subscribers = new ArrayList<>();
- 
-    void subscribe(Subscriber s) { subscribers.add(s); }
- 
-    void publishNews(String news) {
-        System.out.println("Publishing: " + news);
-        for (Subscriber s : subscribers) {
-            s.update(news);         // notify all observers
+
+    // Add subscriber
+    public void subscribe(Subscriber subscriber) {
+        subscribers.add(subscriber);
+    }
+
+    // Upload video
+    public void uploadVideo(String video) {
+        System.out.println("\nNew video uploaded: " + video);
+
+        // Notify all subscribers
+        for (Subscriber subscriber : subscribers) {
+            subscriber.update(video);
         }
     }
 }
- 
-// Concrete observer
-class Viewer implements Subscriber {
-    String name;
-    Viewer(String name) { this.name = name; }
-    public void update(String news) {
-        System.out.println(name + " received update: " + news);
-    }
-}
- 
-public class ObserverDemo {
+
+// Main class
+public class ObserverPatternExmaple {
+
     public static void main(String[] args) {
-        NewsChannel channel = new NewsChannel();
-        channel.subscribe(new Viewer("Manisha"));
-        channel.subscribe(new Viewer("Bishal"));
- 
-        channel.publishNews("Breaking News: Java 21 released!");
+
+        YouTubeChannel channel = new YouTubeChannel();
+
+        Subscriber user1 = new User("Alpha");
+        Subscriber user2 = new User("Beta");
+
+        channel.subscribe(user1);
+        channel.subscribe(user2);
+
+        channel.uploadVideo("Java Observer Pattern");
     }
 }
 ```
@@ -165,50 +209,26 @@ public class ObserverDemo {
 ### Example: Before and After Lambda
  
 ```java
-interface Greeting {
-    void greet(String name);
+interface Message {
+  void show();
 }
- 
-public class LambdaDemo {
-    public static void main(String[] args) {
-        // Before Java 8 - anonymous inner class
-        Greeting g1 = new Greeting() {
-            public void greet(String name) {
-                System.out.println("Hello (anonymous), " + name);
-            }
-        };
-        g1.greet("Alpha");
- 
-        // Using a lambda expression - much shorter
-        Greeting g2 = (name) -> System.out.println("Hello (lambda), " + name);
-        g2.greet("Beta");
-    }
-}
-```
- 
-### Lambdas with Built-in Functional Interfaces
- 
-```java
-import java.util.function.*;
- 
-public class FunctionalInterfaceDemo {
-    public static void main(String[] args) {
-        // Predicate<T> - takes T, returns boolean
-        Predicate<Integer> isEven = n -> n % 2 == 0;
-        System.out.println(isEven.test(10));      // true
- 
-        // Function<T,R> - takes T, returns R
-        Function<Integer, Integer> square = n -> n * n;
-        System.out.println(square.apply(5));       // 25
- 
-        // Consumer<T> - takes T, returns nothing
-        Consumer<String> printer = s -> System.out.println("Value: " + s);
-        printer.accept("Lambda expressions");
- 
-        // Supplier<T> - takes nothing, returns T
-        Supplier<String> supplier = () -> "Generated value";
-        System.out.println(supplier.get());
-    }
+
+public class Example {
+  public static void main(String[] args) {
+    // Without Lambda expression
+    Message m1 = new Message(){
+      public void show(){
+        System.out.println("Hello message");
+      }
+    };
+    m1.show();
+
+  // With Lambda Expression
+    Message m = () -> {
+      System.out.println("Hello message");
+    };
+    m.show();
+  }
 }
 ```
  
@@ -244,22 +264,30 @@ public class LambdaSortDemo {
 ### Example: Basic Stream Pipeline
  
 ```java
-import java.util.*;
-import java.util.stream.*;
- 
-public class StreamDemo {
-    public static void main(String[] args) {
-        List<Integer> numbers = List.of(4, 9, 15, 20, 25, 30, 35);
- 
-        // filter -> even numbers, map -> square them, collect -> back to a List
-        List<Integer> result = numbers.stream()
-                .filter(n -> n % 2 == 0)       // intermediate operation
-                .map(n -> n * n)                // intermediate operation
-                .collect(Collectors.toList());  // terminal operation
- 
-        System.out.println(result);              // [400, 900]
-    }
+import java.util.ArrayList;
+
+public class Example2 {
+  public static void main(String[] args) {
+    ArrayList<Integer> numbers = new ArrayList<>();
+    numbers.add(10);
+    numbers.add(20);
+    numbers.add(40);
+    numbers.add(5);
+    numbers.add(100);
+    numbers.add(30);
+    numbers.add(4);
+
+    // filter numbers greater than 20 -> collect them -> and back to list
+    numbers.stream()
+    .filter(n -> n > 20)
+    .forEach(n -> {
+      System.out.println("Filtered numbers: " + n);
+    });
+
+    
+  }
 }
+
 ```
  
 ### Common Stream Methods
@@ -332,8 +360,21 @@ public class StreamReduceDemo {
 | `orElseThrow()` | Returns the value, or throws an exception if empty |
 | `ifPresent(Consumer)` | Executes an action only if a value is present |
  
-### Example
- 
+### Example_1
+
+```java
+import java.util.Optional;
+
+public class OptionalClassExample {
+  public static void main(String[] args) {
+    String name = null;
+    Optional<String> result = Optional.ofNullable(name);
+    System.out.println(result);
+  }
+}
+```
+
+### Example_2
 ```java
 import java.util.Optional;
  
