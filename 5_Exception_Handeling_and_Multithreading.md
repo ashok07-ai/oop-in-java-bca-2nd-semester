@@ -156,25 +156,6 @@ public class AgeValidator {
 }
 ```
  
-### Nested try and try-with-resources
- 
-```java
-// try-with-resources: automatically closes the resource (must implement AutoCloseable)
-import java.io.FileReader;
-import java.io.BufferedReader;
- 
-public class TryWithResourcesDemo {
-    public static void main(String[] args) {
-        try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
-            System.out.println(br.readLine());
-        } catch (Exception e) {
-            System.out.println("Error reading file: " + e.getMessage());
-        }
-        // no need for a finally block to close br - handled automatically
-    }
-}
-```
- 
 ### Order of Execution Notes
  
 - `catch` blocks must be ordered from **most specific to most general** (a subclass exception before its superclass), otherwise a compile error occurs.
